@@ -1,7 +1,5 @@
 <template>
-  <div id="nav">
-  </div>
-  <router-view/>
+  <DefaultLayout/>
 </template>
 
 <style lang="scss">
@@ -10,3 +8,9 @@
 }
 
 </style>
+<script>
+import DefaultLayout from './layouts/DefaultLayout'
+export default {
+  components: { DefaultLayout }
+}
+</script>

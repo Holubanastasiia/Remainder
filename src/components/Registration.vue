@@ -32,11 +32,11 @@
       </div>
 
       <div class="buttons">
-        <button type="submit" class="submit">
-          <router-link to="/login">
+        <router-link to="/login">
+          <button type="submit" class="submit">
             Login
-          </router-link>
-        </button>
+          </button>
+        </router-link>
       </div>
 
     </form>
@@ -46,9 +46,7 @@
 <script>
 export default {
   name: 'Registration',
-  props: {
-
-  }
+  props: {}
 }
 </script>
 
@@ -103,7 +101,7 @@ button:disabled {
 }
 
 .submit {
-  background-color: #3f51b5;
+  background-color: #00cc99;
   margin-right: 15px;
 }
 

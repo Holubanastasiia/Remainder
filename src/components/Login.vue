@@ -23,12 +23,14 @@
       </div>
 
       <div class="buttons">
-        <button type="submit" class="submit">
-          <router-link to="/page/:id">Login</router-link>
-        </button>
-        <button type="button" class="submit">
-          <router-link to="/">Logout</router-link>
-        </button>
+        <router-link to="/page/:id">
+          <button type="submit" class="submit">
+            Login
+          </button>
+        </router-link>
+        <!--        <button type="button" class="submit">-->
+        <!--          <router-link to="/">Logout</router-link>-->
+        <!--        </button>-->
       </div>
 
     </form>
