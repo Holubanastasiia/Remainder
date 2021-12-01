@@ -1,46 +1,94 @@
 <template>
   <div class="container">
 
-    <div></div>
-    <form class="form">
+    <V-form class="form" @submit="onSubmit">
 
       <div class="form-control">
-        <label for="name">User Name:</label>
-        <input id="name" type="text">
+        <label for="email">Email:</label>
+        <v-field name="email" v-slot={field} rules="email|required">
+          <input v-bind="field" v-model="formLogin.email" name="email" id="email" type="email">
+        </v-field>
         <div class="validation">
-          <small>Enter user name</small>
+          <v-error-message name="email"/>
         </div>
       </div>
 
       <div class="form-control">
         <label for="password">Password:</label>
-        <input id="password" type="password">
-        <div class="validation">
-          <small>Enter password</small>
-          <small>Password may have
-          </small>
-        </div>
+        <v-field name="password" v-slot={field} rules='required|min:6'>
+          <input v-bind="field" v-model="formLogin.password" name="password" id="password" type="password">
+        </v-field>
+        <v-error-message name="password" class="validation"/>
       </div>
-
       <div class="buttons">
-        <router-link to="/page/:id">
-          <button type="submit" class="submit">
-            Login
-          </button>
-        </router-link>
-        <!--        <button type="button" class="submit">-->
-        <!--          <router-link to="/">Logout</router-link>-->
-        <!--        </button>-->
+        <button type="submit" class="submit">
+          Login
+        </button>
       </div>
 
-    </form>
+    </V-form>
   </div>
 </template>
 
 <script>
+import * as V from 'vee-validate/dist/vee-validate'
+import { defineRule } from 'vee-validate/dist/vee-validate'
+import { email, required, min } from '@vee-validate/rules'
+
+// import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 
 export default {
-  name: 'Login'
+  name: 'login',
+  components: {
+    VField: V.Field,
+    VForm: V.Form,
+    VErrorMessage: V.ErrorMessage
+  },
+  data () {
+    return {
+      formLogin: {
+        email: '',
+        password: ''
+      }
+    }
+  },
+  setup () {
+    defineRule('email', email)
+    defineRule('required', (value) => {
+      if (!value) {
+        return 'It is a required field'
+      }
+
+      return true
+    })
+    defineRule('min', (value) => {
+      if (value.length < 6) {
+        return 'Min length is 6 symbols'
+      }
+      return true
+    })
+    return {
+      required,
+      min,
+      email
+    }
+  },
+  methods: {
+    registerUser () {
+      console.log(this.formLogin.email)
+    },
+    async onSubmit () {
+      const formData = {
+        email: this.formLogin.email,
+        password: this.formLogin.password
+      }
+      try {
+        await this.$store.dispatch('login', formData)
+        await this.$router.push('/page/:id')
+        console.log(formData)
+      } catch (e) {}
+    }
+  }
 }
 </script>
 

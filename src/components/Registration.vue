@@ -1,52 +1,113 @@
 <template>
   <div class="container">
 
-    <div class="authError"></div>
-
-    <form class="form">
+    <div class="massage"></div>
+    <v-form @submit="registerUser" class="form">
 
       <div class="form-control">
         <label for="name">User Name:</label>
-        <input id="name" type="text">
+        <v-field name="name" v-slot={field} rules="required">
+          <input v-bind="field" v-model="formRegistr.name" name="name" id="name" type="text">
+        </v-field>
         <div class="validation">
-          <small>Enter user name</small>
+          <v-error-message name="name"/>
         </div>
       </div>
 
       <div class="form-control">
         <label for="email">Email:</label>
-        <input id="email" type="email">
+        <v-field name="email" v-slot={field} rules="email|required">
+          <input v-bind="field" v-model="formRegistr.email" name="email" id="email" type="email">
+        </v-field>
         <div class="validation">
-          <small>Enter email</small>
+          <v-error-message name="email"/>
         </div>
       </div>
 
       <div class="form-control">
         <label for="password">Password:</label>
-        <input id="password" type="password">
+        <v-field name="password" v-slot={field} rules="required|min">
+          <input v-bind="field" v-model="formRegistr.password" name="password" id="password" type="password">
+        </v-field>
         <div class="validation">
-          <small>Enter password</small>
-          <small>Password may have
-          </small>
+          <v-error-message name="password"/>
         </div>
       </div>
 
       <div class="buttons">
-        <router-link to="/login">
-          <button type="submit" class="submit">
-            Login
-          </button>
-        </router-link>
+        <button type="submit" class="submit">
+          Sign up
+        </button>
       </div>
-
-    </form>
+    </v-form>
   </div>
 </template>
 
 <script>
+import * as V from 'vee-validate/dist/vee-validate'
+import { defineRule } from 'vee-validate/dist/vee-validate'
+import { email, required, min } from '@vee-validate/rules'
+
+// import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+
 export default {
   name: 'Registration',
-  props: {}
+  components: {
+    VField: V.Field,
+    VForm: V.Form,
+    VErrorMessage: V.ErrorMessage
+  },
+  data () {
+    return {
+      formRegistr: {
+        name: '',
+        email: '',
+        password: ''
+      }
+    }
+  },
+  setup () {
+    defineRule('email', email)
+    defineRule('required', (value) => {
+      if (!value) {
+        return 'It is a required field'
+      }
+      return true
+    })
+    defineRule('min', (value) => {
+      if (value.length < 6) {
+        return 'Min length is 6 symbols'
+      }
+      return true
+    })
+    return {
+      required,
+      email,
+      min
+    }
+  },
+  methods: {
+    async registerUser () {
+      if (!this.formRegistr) {
+        return false
+      }
+      console.log(this.formRegistr)
+      {
+        const formData = {
+          email: this.formRegistr.email,
+          password: this.formRegistr.email,
+          name: this.formRegistr.name
+        }
+        try {
+          await this.$store.dispatch('register', formData)
+          await this.$router.push('/page/:id')
+          console.log(formData)
+        } catch (e) {
+        }
+        console.log(formData.name)
+      }
+    }
+  }
 }
 </script>
 
