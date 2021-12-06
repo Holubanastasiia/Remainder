@@ -47,6 +47,7 @@ import * as V from 'vee-validate/dist/vee-validate';
 import { defineRule } from 'vee-validate/dist/vee-validate';
 import { email, required, min } from '@vee-validate/rules';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getDatabase, ref, set } from 'firebase/database';
 
 export default {
   name: 'register',
@@ -56,7 +57,9 @@ export default {
     VErrorMessage: V.ErrorMessage
   },
   data () {
+    const auth = getAuth();
     return {
+      auth,
       formRegistr: {
         name: '',
         email: '',
@@ -64,16 +67,25 @@ export default {
       }
     };
   },
+  computed: {
+    uid () {
+      return this.auth.currentUser ? this.auth.currentUser.uid : null;
+    }
+  },
   methods: {
     async handleSubmit () {
       try {
-        const auth = getAuth();
         const {
           email,
-          password
+          password,
+          name
         } = this.formRegistr;
         console.log(email);
-        await createUserWithEmailAndPassword(auth, email, password);
+        await createUserWithEmailAndPassword(this.auth, email, password);
+        const db = await getDatabase();
+        await set(ref(db, `/user/${this.uid}/info`), {
+          name
+        });
         await this.$router.push('/page/:id');
       } catch (e) {
         alert(e.message);

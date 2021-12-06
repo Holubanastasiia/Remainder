@@ -36,7 +36,8 @@ export default {
     const signOutUser = async () => {
       try {
         await signOut(auth);
-        await router.push('/login');
+        await router.push('/login?message=logout');
+        alert('Do you really want to log out? ');
       } catch (e) {
         alert(e.message);
       }
@@ -54,6 +55,10 @@ export default {
 .logout{
   color: #fff;
   font-size: 20px;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  cursor: pointer;
 }
 
 .profile{
@@ -63,11 +68,11 @@ export default {
   position: relative;
 }
 .profile:hover .profile__list{
-  opacity: 1;
+  display: block;
 }
 
 .profile__list{
-  opacity: 0;
+  display: none;
   text-align: center;
   width: 100px;
   background-color: #00cc99;
