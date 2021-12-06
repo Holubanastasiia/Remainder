@@ -1,7 +1,7 @@
 <template>
   <div class="container">
 
-    <V-form class="form" @submit="onSubmit">
+    <V-form class="form" @submit="handleSubmit">
 
       <div class="form-control">
         <label for="email">Email:</label>
@@ -24,18 +24,21 @@
         <button type="submit" class="submit">
           Login
         </button>
+        <button class="submit">
+          <router-link to="/registration">
+            Sign up
+          </router-link>
+        </button>
       </div>
-
     </V-form>
   </div>
 </template>
 
 <script>
-import * as V from 'vee-validate/dist/vee-validate'
-import { defineRule } from 'vee-validate/dist/vee-validate'
-import { email, required, min } from '@vee-validate/rules'
-
-// import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import * as V from 'vee-validate/dist/vee-validate';
+import { defineRule } from 'vee-validate/dist/vee-validate';
+import { email, required, min } from '@vee-validate/rules';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 export default {
   name: 'login',
@@ -50,46 +53,44 @@ export default {
         email: '',
         password: ''
       }
+    };
+  },
+  methods: {
+    async handleSubmit () {
+      try {
+        const auth = getAuth();
+        const {
+          email,
+          password
+        } = this.formLogin;
+        await signInWithEmailAndPassword(auth, email, password);
+        await this.$router.push('/page/:id');
+      } catch (e) {
+        alert(e.message);
+      }
     }
   },
   setup () {
-    defineRule('email', email)
+    defineRule('email', email);
     defineRule('required', (value) => {
       if (!value) {
-        return 'It is a required field'
+        return 'It is a required field';
       }
-
-      return true
-    })
+      return true;
+    });
     defineRule('min', (value) => {
       if (value.length < 6) {
-        return 'Min length is 6 symbols'
+        return 'Min length is 6 symbols';
       }
-      return true
-    })
+      return true;
+    });
     return {
       required,
       min,
       email
-    }
-  },
-  methods: {
-    registerUser () {
-      console.log(this.formLogin.email)
-    },
-    async onSubmit () {
-      const formData = {
-        email: this.formLogin.email,
-        password: this.formLogin.password
-      }
-      try {
-        await this.$store.dispatch('login', formData)
-        await this.$router.push('/page/:id')
-        console.log(formData)
-      } catch (e) {}
-    }
+    };
   }
-}
+};
 </script>
 
 <style scoped>
@@ -175,5 +176,4 @@ label {
 .validation {
   color: #dc3545;
 }
-
 </style>

@@ -6,12 +6,12 @@
 </template>
 
 <script>
-import Header from '../components/Header'
+import Header from '../components/Header';
 
 export default {
-  name: 'DefaultLayout',
+  name: 'default-layout',
   components: { Header }
-}
+};
 </script>
 
 <style scoped>

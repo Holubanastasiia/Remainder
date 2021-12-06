@@ -1,16 +1,29 @@
 <template>
-  <DefaultLayout/>
+  <component :is="layout">
+    <router-view/>
+  </component>
 </template>
 
 <style lang="scss">
 @import "assets/reset.css";
+
 #nav {
 }
 
 </style>
 <script>
-import DefaultLayout from './layouts/DefaultLayout'
+import DefaultLayout from './layouts/DefaultLayout';
+import userLayout from './layouts/userLayout';
+
 export default {
-  components: { DefaultLayout }
-}
+  computed: {
+    layout () {
+      return (this.$route.meta.layout || 'empty') + '-layout';
+    }
+  },
+  components: {
+    userLayout,
+    DefaultLayout
+  }
+};
 </script>

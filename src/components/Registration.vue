@@ -1,8 +1,7 @@
 <template>
   <div class="container">
-
     <div class="massage"></div>
-    <v-form @submit="registerUser" class="form">
+    <v-form @submit="handleSubmit" class="form">
 
       <div class="form-control">
         <label for="name">User Name:</label>
@@ -44,14 +43,13 @@
 </template>
 
 <script>
-import * as V from 'vee-validate/dist/vee-validate'
-import { defineRule } from 'vee-validate/dist/vee-validate'
-import { email, required, min } from '@vee-validate/rules'
-
-// import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import * as V from 'vee-validate/dist/vee-validate';
+import { defineRule } from 'vee-validate/dist/vee-validate';
+import { email, required, min } from '@vee-validate/rules';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
 export default {
-  name: 'Registration',
+  name: 'register',
   components: {
     VField: V.Field,
     VForm: V.Form,
@@ -64,51 +62,46 @@ export default {
         email: '',
         password: ''
       }
+    };
+  },
+  methods: {
+    async handleSubmit () {
+      try {
+        const auth = getAuth();
+        const {
+          email,
+          password
+        } = this.formRegistr;
+        console.log(email);
+        await createUserWithEmailAndPassword(auth, email, password);
+        await this.$router.push('/page/:id');
+      } catch (e) {
+        alert(e.message);
+      }
     }
   },
   setup () {
-    defineRule('email', email)
+    defineRule('email', email);
     defineRule('required', (value) => {
       if (!value) {
-        return 'It is a required field'
+        return 'It is a required field';
       }
-      return true
-    })
+      return true;
+    });
     defineRule('min', (value) => {
       if (value.length < 6) {
-        return 'Min length is 6 symbols'
+        return 'Min length is 6 symbols';
       }
-      return true
-    })
+      return true;
+    });
+
     return {
       required,
       email,
       min
-    }
-  },
-  methods: {
-    async registerUser () {
-      if (!this.formRegistr) {
-        return false
-      }
-      console.log(this.formRegistr)
-      {
-        const formData = {
-          email: this.formRegistr.email,
-          password: this.formRegistr.email,
-          name: this.formRegistr.name
-        }
-        try {
-          await this.$store.dispatch('register', formData)
-          await this.$router.push('/page/:id')
-          console.log(formData)
-        } catch (e) {
-        }
-        console.log(formData.name)
-      }
-    }
+    };
   }
-}
+};
 </script>
 
 <style scoped>
