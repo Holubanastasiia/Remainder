@@ -38,7 +38,7 @@
 import * as V from 'vee-validate/dist/vee-validate';
 import { defineRule } from 'vee-validate/dist/vee-validate';
 import { email, required, min } from '@vee-validate/rules';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+// import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 export default {
   name: 'login',
@@ -57,16 +57,15 @@ export default {
   },
   methods: {
     async handleSubmit () {
+      const formData = {
+        email: this.formLogin.email,
+        password: this.formLogin.password
+      };
       try {
-        const auth = getAuth();
-        const {
-          email,
-          password
-        } = this.formLogin;
-        await signInWithEmailAndPassword(auth, email, password);
+        await this.$store.dispatch('login', formData);
+        console.log(formData);
         await this.$router.push('/page/:id');
       } catch (e) {
-        alert(e.message);
       }
     }
   },

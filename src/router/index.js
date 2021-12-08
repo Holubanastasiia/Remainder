@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
-// import { getUserState } from '../firebase'
+// import { getUserState } from '../firebase';
 
 const routes = [
   {
@@ -12,14 +12,12 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    // meta: { requiresAuth: true },
     meta: { layout: 'default' },
     component: () => import('../components/Login')
   },
   {
     path: '/auth',
     name: 'Auth',
-    // meta: { requiresAuth: true },
     meta: { layout: 'default' },
     component: () => import('../views/Auth')
   },
@@ -27,14 +25,12 @@ const routes = [
     path: '/registration',
     name: 'Registration',
     meta: { layout: 'default' },
-    // meta: { requiresAuth: true },
     component: () => import('../components/Registration')
   },
   {
     path: '/page/:id',
     name: 'Page',
-    meta: { layout: 'default' },
-    // meta: { requiresAuth: true },
+    meta: { requiresAuth: true, layout: 'default' },
     component: () => import('../views/UserPage')
   }
 ];
@@ -44,18 +40,18 @@ const router = createRouter({
 });
 
 // router.beforeEach(async (to, from, next) => {
-//   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-//   const requiresUnauth = to.matched.some(record => record.meta.requiresUnauth)
+//   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+//   const requiresUnauth = to.matched.some(record => record.meta.requiresUnauth);
 //
-//   const isAuth = await getUserState()
+//   const isAuth = await getUserState();
 //
 //   if (requiresAuth && !isAuth) {
-//     next('/login')
+//     next('/login');
 //   } else if (requiresUnauth && isAuth) {
-//     next('/page/:id')
+//     next('/page/:id');
 //   } else {
-//     next()
+//     next();
 //   }
-// })
+// });
 
 export default router;

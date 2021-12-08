@@ -10,7 +10,7 @@
           </router-link>
           <ul class="profile__list">
             <li>
-              <button class="logout" @click="signOutUser">
+              <button class="logout" @click="logout">
                 Logout
               </button>
             </li>
@@ -23,26 +23,32 @@
 
 <script>
 
-import { useAuthState } from '../firebase';
-import { useRouter } from 'vue-router';
-import { getAuth, signOut } from 'firebase/auth';
+// import { useAuthState } from '../firebase';
+// import { useRouter } from 'vue-router';
+// import { getAuth, signOut } from 'firebase/auth';
 
 export default {
   name: 'Header',
+  methods: {
+    async logout () {
+      await this.$store.dispatch('logout');
+      await this.$router.push('/login?message=logout');
+    }
+  },
   setup () {
-    const { user } = useAuthState();
-    const auth = getAuth();
-    const router = useRouter();
-    const signOutUser = async () => {
-      try {
-        await signOut(auth);
-        await router.push('/login?message=logout');
-        alert('Do you really want to log out? ');
-      } catch (e) {
-        alert(e.message);
-      }
-    };
-    return { user, signOutUser };
+    // const { user } = useAuthState();
+    // const auth = getAuth();
+    // const router = useRouter();
+    // const signOutUser = async () => {
+    //   try {
+    //     await signOut(auth);
+    //     await router.push('/login?message=logout');
+    //     alert('Do you really want to log out? ');
+    //   } catch (e) {
+    //     alert(e.message);
+    //   }
+    // };
+    // return { user, signOutUser };
   }
 };
 </script>
