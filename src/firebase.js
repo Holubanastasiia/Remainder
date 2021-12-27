@@ -17,4 +17,7 @@ const firebaseApp = initializeApp(firebaseConfig);
 export const db = getDatabase(firebaseApp);
 export const authInstance = getAuth(firebaseApp);
 
-onAuthStateChanged(authInstance, user => console.log(user));
+onAuthStateChanged(authInstance, (user) => {
+  console.log(user);
+  return user ? user.uid : null;
+});

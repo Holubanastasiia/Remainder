@@ -2,7 +2,6 @@
   <div class="container">
 
     <V-form class="form" @submit="handleSubmit">
-
       <div class="form-control">
         <label for="email">Email:</label>
         <v-field name="email" v-slot={field} rules="email|required">
@@ -38,7 +37,6 @@
 import * as V from 'vee-validate/dist/vee-validate';
 import { defineRule } from 'vee-validate/dist/vee-validate';
 import { email, required, min } from '@vee-validate/rules';
-// import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 export default {
   name: 'login',
@@ -62,9 +60,9 @@ export default {
         password: this.formLogin.password
       };
       try {
-        await this.$store.dispatch('login', formData);
+        await this.$store.dispatch('auth/login', formData);
         console.log(formData);
-        await this.$router.push('/page/:id');
+        await this.$router.push('/page');
       } catch (e) {
       }
     }
@@ -93,18 +91,6 @@ export default {
 </script>
 
 <style scoped>
-input[type='text'],
-input[type='email'],
-input[type='password'],
-input[type='date'],
-select,
-textarea {
-  display: block;
-  width: 100%;
-  padding: 0.4rem;
-  font-size: 1.2rem;
-  border: 1px solid #ccc;
-}
 
 .authError {
   background-color: rgba(229, 226, 226, 0.829);
@@ -115,31 +101,6 @@ textarea {
   width: 100%;
   margin-bottom: -35px;
   margin-top: 30px;
-}
-
-.buttons {
-  display: flex;
-}
-
-ul {
-  list-style: none;
-}
-
-button {
-  padding: 10px;
-  width: 100px;
-  font-weight: bold;
-  color: #fff;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  font-size: 18px;
-}
-
-button:disabled {
-  cursor: not-allowed;
-  background: gray;
-  color: #111;
 }
 
 .submit {

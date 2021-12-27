@@ -1,8 +1,9 @@
 <template>
+  <div :class="[!isError ? 'sign-error' : 'auth-error']" class="error">
+    <p> {{ fbErrorMap.value }}</p>
+  </div>
   <div class="container">
-    <div class="massage"></div>
-    <v-form @submit="handleSubmit" class="form">
-
+    <v-form @submit="handleSubmit" class="form" v-model="formRegistr">
       <div class="form-control">
         <label for="name">User Name:</label>
         <v-field name="name" v-slot={field} rules="required">
@@ -46,8 +47,6 @@
 import * as V from 'vee-validate/dist/vee-validate';
 import { defineRule } from 'vee-validate/dist/vee-validate';
 import { email, required, min } from '@vee-validate/rules';
-// import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-// import { getDatabase, ref, set } from 'firebase/database';
 
 export default {
   name: 'register',
@@ -62,6 +61,11 @@ export default {
         name: '',
         email: '',
         password: ''
+      },
+      isError: false,
+      fbErrorMap: {
+        key: 'auth/email-already-in-use',
+        value: 'Email already in use'
       }
     };
   },
@@ -73,10 +77,14 @@ export default {
         name: this.formRegistr.name
       };
       try {
-        await this.$store.dispatch('register', formData);
-        await this.$router.push('/page/:id');
-      } catch (e) {
-        alert(e.message);
+        await this.$store.dispatch('auth/register', formData);
+        // await this.$store.dispatch('auth/isAuth');
+        await this.$router.push('/page');
+      } catch (error) {
+        this.isError = error;
+        setTimeout(() => {
+          this.isError = false;
+        }, 5000);
       }
     }
   },
@@ -117,16 +125,26 @@ textarea {
   font-size: 1.2rem;
   border: 1px solid #ccc;
 }
+.sign-error{
+  transform: translate(100%);
+}
 
-.authError {
+.auth-error{
+  transform: translate(0%);
+}
+.error{
+  position: absolute;
   background-color: rgba(229, 226, 226, 0.829);
   text-align: center;
-  color: #3f51b5;
+  color: #003900;
   font-weight: bold;
-  height: 35px;
+  height: 45px;
   width: 100%;
-  margin-bottom: -35px;
-  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.7;
+  transition: transform 1500ms ease-in-out;
 }
 
 .buttons {
@@ -171,7 +189,7 @@ label {
 
 .form {
   max-width: 600px;
-  margin: 50px auto;
+  margin: 70px auto;
 }
 
 .form-control {

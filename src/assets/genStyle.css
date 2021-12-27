@@ -1,0 +1,35 @@
+body{
+    font-family: 'Lato', sans-serif;
+}
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='date'],
+select,
+textarea {
+    display: block;
+    width: 100%;
+    padding: 0.4rem;
+    margin-top: 5px;
+    font-size: 1.2rem;
+    border: 1px solid #ccc;
+}
+
+.buttons {
+    display: flex;
+}
+
+ul {
+    list-style: none;
+}
+
+button {
+    padding: 10px;
+    width: 100px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    font-size: 18px;
+}

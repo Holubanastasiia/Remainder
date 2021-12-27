@@ -6,6 +6,7 @@
 
 <style lang="scss">
 @import "assets/reset.css";
+@import "assets/genStyle.css";
 
 #nav {
 }

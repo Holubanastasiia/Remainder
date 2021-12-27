@@ -2,15 +2,20 @@
   <div class="home">
     <nav class="home__nav">
       <ul class="home__nav-list">
+        <li>
+          <p class="user-name">
+<!--            {{ info }}-->
+          </p>
+        </li>
         <li class="profile home__nav-item">
-          <router-link to="/page/:id">
+          <router-link to="/page">
             <img class="profile"
                  src="../assets/img/2.png"
                  alt="">
           </router-link>
           <ul class="profile__list">
             <li>
-              <button class="logout" @click="logout">
+              <button class="logout" @click="handleLogout">
                 Logout
               </button>
             </li>
@@ -23,33 +28,26 @@
 
 <script>
 
-// import { useAuthState } from '../firebase';
-// import { useRouter } from 'vue-router';
-// import { getAuth, signOut } from 'firebase/auth';
-
 export default {
   name: 'Header',
   methods: {
-    async logout () {
-      await this.$store.dispatch('logout');
-      await this.$router.push('/login?message=logout');
+    handleLogout () {
+      this.$store.dispatch('auth/logout').then(() => {
+        this.$router.push('/login');
+      });
     }
-  },
-  setup () {
-    // const { user } = useAuthState();
-    // const auth = getAuth();
-    // const router = useRouter();
-    // const signOutUser = async () => {
-    //   try {
-    //     await signOut(auth);
-    //     await router.push('/login?message=logout');
-    //     alert('Do you really want to log out? ');
-    //   } catch (e) {
-    //     alert(e.message);
-    //   }
-    // };
-    // return { user, signOutUser };
   }
+  // computed: {
+  //   info () {
+  //     console.log(this.$store.getters.usersInfo);
+  //     return this.$store.getters.usersInfo;
+  //   }
+  // },
+  // mounted () {
+  //   if (!this.info) {
+  //     this.$store.dispatch('auth/fetchInfo');
+  //   }
+  // }
 };
 </script>
 
@@ -72,6 +70,7 @@ export default {
   height: 60px;
   cursor: pointer;
   position: relative;
+  display: flex;
 }
 .profile:hover .profile__list{
   display: block;
@@ -81,15 +80,16 @@ export default {
   display: none;
   text-align: center;
   width: 100px;
-  background-color: #00cc99;
   margin-right: 40px;
   position: absolute;
-  top: 63px;
-  right: -55px;
+  top: 45px;
+  padding: 18px 0 0 0;
+  left: 0;
 }
 
 .profile__list li{
   border: 1px solid #ccc;
+  background-color: #00cc99;
 }
 
 .home {
@@ -103,15 +103,21 @@ export default {
 .home__nav {
   display: flex;
   justify-content: right;
+  margin-right: 40px;
 }
 
 .home__nav-list {
   display: flex;
   margin-top: 7px;
-  margin-right: 40px;
+  align-items: center;
+}
+
+.home__nav-list>li{
+  margin-right: 20px;
 }
 
 .home__nav-item {
   margin-right: 20px;
+  align-items: center;
 }
 </style>
