@@ -22,6 +22,18 @@ const routes = [
     component: () => import('../components/Registration')
   },
   {
+    path: '/page/list',
+    name: 'RemainderList',
+    meta: { requiresAuth: true, layout: 'default' },
+    component: () => import('../views/RemainderList')
+  },
+  {
+    path: '/page/success',
+    name: 'Success',
+    meta: { requiresAuth: true, layout: 'default' },
+    component: () => import('../views/SuccessPage')
+  },
+  {
     path: '/page',
     name: 'Page',
     meta: { requiresAuth: true, layout: 'default' },

@@ -2,7 +2,7 @@
 <div class="remainder">
   <div class="wrapper">
     <h2 class="title">
-      Remainder
+      Create remainder
     </h2>
     <div class="remainder__text">
       <label for="text" class="label">
@@ -29,17 +29,19 @@
       <input type="time" class="date" id="time">
     </div>
     <button class="btn .button" @click="addNewReminder">
-      add
+     <router-link to="/page/success">
+       add
+     </router-link>
     </button>
     <hr/>
-    <ul class="list" v-if="notes.length !== 0">
-      <li v-for="(note, idx) of notes" v-bind:key="note">
-        {{ note }}
-        <button class="delete" @click="removeNote(idx)">
-          Delete
-        </button>
-      </li>
-    </ul>
+<!--    <ul class="list" v-if="notes.length !== 0">-->
+<!--      <li v-for="(note, idx) of notes" v-bind:key="note">-->
+<!--        {{ note }}-->
+<!--        <button class="delete" @click="removeNote(idx)">-->
+<!--          Delete-->
+<!--        </button>-->
+<!--      </li>-->
+<!--    </ul>-->
   </div>
 </div>
 </template>
@@ -67,10 +69,6 @@ export default {
     async addNewReminder () {
       if (this.inputValue.length !== 0) {
         const remainderText = this.inputValue;
-        // const info = this.$store.dispatch('auth/fetchInfo');
-        // if (info) {
-        //   info.remainderText = remainderText;
-        // }
         this.notes.push(remainderText);
         this.inputValue = ' ';
       }
@@ -90,7 +88,10 @@ export default {
 </script>
 
 <style scoped>
-
+li{
+  display: flex;
+  justify-content: space-between;
+}
 input{
   margin-bottom: 20px;
 }
@@ -113,16 +114,6 @@ input{
   padding: 30px;
 }
 
-.title{
-  font-size: 32px;
-  color: #003900;
-  padding-bottom: 20px;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  align-items: center;
-}
-
 .label{
   margin-bottom: 10px;
   font-size: 24px;
@@ -130,10 +121,6 @@ input{
 
 .btn{
   background-color: #00cc99;
-}
-
-.delete{
-  background-color: #e53935;
 }
 
 </style>
