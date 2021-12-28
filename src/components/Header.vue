@@ -4,7 +4,7 @@
       <ul class="home__nav-list">
         <li>
           <p class="user-name">
-<!--            {{ info }}-->
+            {{ name }}
           </p>
         </li>
         <li class="profile home__nav-item">
@@ -36,18 +36,12 @@ export default {
         this.$router.push('/login');
       });
     }
+  },
+  computed: {
+    name () {
+      return this.$store.getters['auth/usersInfo'].name;
+    }
   }
-  // computed: {
-  //   info () {
-  //     console.log(this.$store.getters.usersInfo);
-  //     return this.$store.getters.usersInfo;
-  //   }
-  // },
-  // mounted () {
-  //   if (!this.info) {
-  //     this.$store.dispatch('auth/fetchInfo');
-  //   }
-  // }
 };
 </script>
 

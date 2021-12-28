@@ -33,10 +33,18 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 });
+
 router.beforeEach(async (to, from, next) => {
-  const currentUser = authInstance.currentUser;
-  const requiresAuth = to.meta.requiresAuth;
-  if (requiresAuth && !currentUser) {
+  const user = await new Promise((resolve, reject) => {
+    authInstance.onAuthStateChanged(user => {
+      resolve(user);
+    }, () => {
+      // eslint-disable-next-line prefer-promise-reject-errors
+      reject(null);
+    });
+  });
+  console.log('guard - currentUser', user);
+  if (to.meta.requiresAuth && !user) {
     next('/login');
   } else {
     next();

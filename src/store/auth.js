@@ -1,7 +1,6 @@
 import { signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from 'firebase/auth';
 import { authInstance, db } from '../firebase';
 import { set, ref as Firebase, get, child } from 'firebase/database';
-// import { ref } from 'vue';
 
 export default {
   namespaced: true,
@@ -16,10 +15,10 @@ export default {
       try {
         const response = await signInWithEmailAndPassword(authInstance, email, password);
 
-        const token = await response.user.getIdToken();
-        if (token) {
-          console.log('token', token);
-          commit('setToken', token);
+        const uid = response.user.uid;
+        if (uid) {
+          console.log('login - uid', uid);
+          commit('setUID', uid);
         }
       } catch (e) {
         console.log(e);
@@ -50,9 +49,7 @@ export default {
       }
     },
     async fetchInfo ({
-      dispatch,
-      commit,
-      getters
+      commit
     }) {
       try {
         const user = authInstance.currentUser;
@@ -62,7 +59,7 @@ export default {
         const usersInfo = await get(child(dbRef, `/users/${uid}/info`)).then((user) => {
           return user.val();
         });
-        console.log('usersInfo', usersInfo);
+        console.log('usersInfo-auth', usersInfo);
         commit('setInfo', usersInfo);
       } catch (e) {
         console.log(e);
@@ -75,21 +72,18 @@ export default {
     }
   },
   state: {
-    isAuth () {
-      return this.token !== null;
-    },
-    usersInfo: {}
+    usersInfo: {},
+    uid: null
   },
   mutations: {
-    setToken (state, token) {
-      if (token) {
-        localStorage.setItem('user', token);
-        state.isAuth = !!token;
-      } else {
-        localStorage.clear();
+    setUID (state, uid) {
+      if (uid) {
+        this.uid = uid;
+        localStorage.setItem('uid', uid);
       }
     },
     setInfo (state, usersInfo) {
+      // this.usersInfo = usersInfo;
       state.usersInfo = usersInfo;
     },
     clearInfo (state) {
@@ -97,7 +91,10 @@ export default {
     }
   },
   getters: {
-    isAuth: s => s.localStorage.getItem('user'),
-    usersInfo: s => s.usersInfo
+    isAuth: s => s.token !== null,
+    // usersInfo: s => s.usersInfo
+    usersInfo (s) {
+      return s.usersInfo;
+    }
   }
 };

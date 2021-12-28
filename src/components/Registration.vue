@@ -125,45 +125,9 @@ textarea {
   font-size: 1.2rem;
   border: 1px solid #ccc;
 }
-.sign-error{
-  transform: translate(100%);
-}
-
-.auth-error{
-  transform: translate(0%);
-}
-.error{
-  position: absolute;
-  background-color: rgba(229, 226, 226, 0.829);
-  text-align: center;
-  color: #003900;
-  font-weight: bold;
-  height: 45px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0.7;
-  transition: transform 1500ms ease-in-out;
-}
 
 .buttons {
   display: flex;
-}
-
-ul {
-  list-style: none;
-}
-
-button {
-  padding: 10px;
-  width: 100px;
-  font-weight: bold;
-  color: #fff;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  font-size: 18px;
 }
 
 button:disabled {

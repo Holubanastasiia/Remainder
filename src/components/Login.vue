@@ -1,6 +1,8 @@
 <template>
+  <div :class="[!isError ? 'sign-error' : 'auth-error']" class="error">
+    <p> {{ fbErrorMap.value }}</p>
+  </div>
   <div class="container">
-
     <V-form class="form" @submit="handleSubmit">
       <div class="form-control">
         <label for="email">Email:</label>
@@ -50,6 +52,11 @@ export default {
       formLogin: {
         email: '',
         password: ''
+      },
+      isError: false,
+      fbErrorMap: {
+        key: 'auth/user-not-found',
+        value: 'User not found'
       }
     };
   },
@@ -64,6 +71,10 @@ export default {
         console.log(formData);
         await this.$router.push('/page');
       } catch (e) {
+        this.isError = e;
+        setTimeout(() => {
+          this.isError = false;
+        }, 5000);
       }
     }
   },

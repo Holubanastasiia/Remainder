@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 import { getDatabase } from 'firebase/database';
 
 const firebaseConfig = {
@@ -16,8 +16,3 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 export const db = getDatabase(firebaseApp);
 export const authInstance = getAuth(firebaseApp);
-
-onAuthStateChanged(authInstance, (user) => {
-  console.log(user);
-  return user ? user.uid : null;
-});

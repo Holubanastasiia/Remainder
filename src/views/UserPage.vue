@@ -18,6 +18,9 @@
         Choose date when remind
       </label>
       <input type="date" class="date" id="date">
+<!--             :value="inputDate"-->
+<!--             @input="inputChangeHandler"-->
+<!--             @keypress.enter="addNewReminder"-->
     </div>
     <div class="remainder__time">
       <label for="time" class="label">
@@ -43,22 +46,32 @@
 
 <script>
 
+// import { authInstance, db } from '../firebase'
+// import { ref as Firebase, set } from 'firebase/database'
+
 export default {
   name: 'UserPage',
   data () {
     return {
       title: 'Remainder',
       inputValue: '',
+      // inputDate: '',
       notes: []
     };
   },
   methods: {
     inputChangeHandler (event) {
       this.inputValue = event.target.value;
+      // this.inputDate = event.target.value;
     },
-    addNewReminder () {
+    async addNewReminder () {
       if (this.inputValue.length !== 0) {
-        this.notes.push(this.inputValue);
+        const remainderText = this.inputValue;
+        // const info = this.$store.dispatch('auth/fetchInfo');
+        // if (info) {
+        //   info.remainderText = remainderText;
+        // }
+        this.notes.push(remainderText);
         this.inputValue = ' ';
       }
     },
@@ -66,15 +79,10 @@ export default {
       this.notes.splice(idx, 1);
     }
   },
-  computed: {
-    info () {
-      console.log(this.$store.getters.usersInfo);
-      return this.$store.getters.usersInfo;
-    }
-  },
-  created () {
-    if (!this.info) {
-      this.$store.dispatch('auth/fetchInfo');
+  async mounted () {
+    console.log('user-page', this.$store.getters['auth/usersInfo']);
+    if (!Object.keys(this.$store.getters['auth/usersInfo']).length) {
+      await this.$store.dispatch('auth/fetchInfo');
     }
   }
 };

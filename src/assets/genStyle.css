@@ -33,3 +33,25 @@ button {
     outline: none;
     font-size: 18px;
 }
+
+.sign-error{
+    transform: translate(100%);
+}
+
+.auth-error{
+    transform: translate(0%);
+}
+.error{
+    position: absolute;
+    background-color: rgba(229, 226, 226, 0.829);
+    text-align: center;
+    color: #003900;
+    font-weight: bold;
+    height: 45px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.7;
+    transition: transform 1500ms ease-in-out;
+}
