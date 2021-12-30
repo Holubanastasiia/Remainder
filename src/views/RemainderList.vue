@@ -4,8 +4,8 @@
     <div v-if="remainderList.length === 0">
       You dont have any remainders yet. <span class="link"> <router-link to="/page">Click to create first remainder</router-link></span>
     </div>
-    <ul v-else>
-      <li v-for="(item, idx) of remainderList" v-bind:key="item" class="item">
+    <ul v-for="(item, idx) of remainderList" v-bind:key="item">
+      <li  class="item">
         {{ item }}
         <button class="delete" @click="removeItem(idx)">
           Delete
@@ -28,9 +28,12 @@ export default {
       this.remainderList.splice(idx, 1);
     }
   },
+  created () {
+    this.remainderList = this.remainderText;
+  },
   computed: {
     remainderText () {
-      return this.$store.getters['auth/usersInfo'].remainderText;
+      return this.$store.getters['remainders/usersRemainders'];
     }
   }
 };

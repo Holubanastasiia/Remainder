@@ -27,7 +27,8 @@ export default {
     },
     async register ({
       action,
-      getters
+      getters,
+      dispatch
     }, {
       email,
       password,
@@ -39,10 +40,9 @@ export default {
         const uid = await user ? user.uid : null;
         console.log('uid', uid);
         await set(Firebase(db, `/users/${uid}/info`), {
-          name,
-          remainderText: '',
-          date: ''
+          name
         });
+        // await this.$store.dispatch('remainders/addReminder');
       } catch (e) {
         console.log(e);
         throw e;

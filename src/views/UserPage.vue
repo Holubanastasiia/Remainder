@@ -18,9 +18,6 @@
         Choose date when remind
       </label>
       <input type="date" class="date" id="date">
-<!--             :value="inputDate"-->
-<!--             @input="inputChangeHandler"-->
-<!--             @keypress.enter="addNewReminder"-->
     </div>
     <div class="remainder__time">
       <label for="time" class="label">
@@ -28,28 +25,15 @@
       </label>
       <input type="time" class="date" id="time">
     </div>
-    <button class="btn .button" @click="addNewReminder">
-     <router-link to="/page/success">
+       <button class="btn .button" @click="addNewReminder">
        add
-     </router-link>
-    </button>
+       </button>
     <hr/>
-<!--    <ul class="list" v-if="notes.length !== 0">-->
-<!--      <li v-for="(note, idx) of notes" v-bind:key="note">-->
-<!--        {{ note }}-->
-<!--        <button class="delete" @click="removeNote(idx)">-->
-<!--          Delete-->
-<!--        </button>-->
-<!--      </li>-->
-<!--    </ul>-->
   </div>
 </div>
 </template>
 
 <script>
-
-// import { authInstance, db } from '../firebase'
-// import { ref as Firebase, set } from 'firebase/database'
 
 export default {
   name: 'UserPage',
@@ -57,28 +41,22 @@ export default {
     return {
       title: 'Remainder',
       inputValue: '',
-      // inputDate: '',
       notes: []
     };
   },
   methods: {
     inputChangeHandler (event) {
       this.inputValue = event.target.value;
-      // this.inputDate = event.target.value;
     },
     async addNewReminder () {
-      if (this.inputValue.length !== 0) {
-        const remainderText = this.inputValue;
-        this.notes.push(remainderText);
+      if (this.inputValue.length) {
+        this.$store.dispatch('remainders/addReminder', this.inputValue);
         this.inputValue = ' ';
+        await this.$router.push('/page/success');
       }
-    },
-    removeNote (idx) {
-      this.notes.splice(idx, 1);
     }
   },
   async mounted () {
-    console.log('user-page', this.$store.getters['auth/usersInfo']);
     if (!Object.keys(this.$store.getters['auth/usersInfo']).length) {
       await this.$store.dispatch('auth/fetchInfo');
     }

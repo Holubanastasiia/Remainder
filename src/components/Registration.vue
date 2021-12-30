@@ -78,7 +78,7 @@ export default {
       };
       try {
         await this.$store.dispatch('auth/register', formData);
-        // await this.$store.dispatch('auth/isAuth');
+        await this.$store.dispatch('remainders/addReminder');
         await this.$router.push('/page');
       } catch (error) {
         this.isError = error;

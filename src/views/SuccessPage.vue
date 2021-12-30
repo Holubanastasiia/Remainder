@@ -8,21 +8,24 @@
         <p>
           Create ones more
         </p>
-        <button>
-          <router-link to="/page">
+
+        <router-link to="/page">
+          <button>
             Create
-          </router-link>
-        </button>
+          </button>
+        </router-link>
+
       </div>
       <div class="item">
         <p>
           Go to list
         </p>
-        <button>
-          <router-link to="/page/list">
+        <router-link to="/page/list">
+          <button>
             Go
-          </router-link>
-        </button>
+          </button>
+        </router-link>
+
       </div>
     </div>
   </div>
@@ -30,7 +33,13 @@
 
 <script>
 export default {
-  name: 'SuccessPage'
+  name: 'SuccessPage',
+  async mounted () {
+    if (!Object.keys(this.$store.getters['remainders/usersRemainders']).length) {
+      console.log('userpage work');
+      await this.$store.dispatch('remainders/getRemainders');
+    }
+  }
 };
 </script>
 
